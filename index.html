@@ -7,12 +7,7 @@
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif;}
 
 body{
 height:100vh;
@@ -21,16 +16,31 @@ display:flex;
 align-items:center;
 justify-content:center;
 overflow:hidden;
+transition:1s;
+}
+
+body.night{
+background:linear-gradient(180deg,#0b0f2a,#1b2b55);
+}
+
+/* STARS */
+
+.star{
+position:fixed;
+width:2px;
+height:2px;
+background:white;
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+from{opacity:0.2}
+to{opacity:1}
 }
 
 /* CARD */
 
-.card{
-width:90%;
-max-width:500px;
-height:320px;
-perspective:1000px;
-}
+.card{width:90%;max-width:500px;height:320px;perspective:1000px;}
 
 .card-inner{
 width:100%;
@@ -40,9 +50,7 @@ transition:1s;
 transform-style:preserve-3d;
 }
 
-.card.open .card-inner{
-transform:rotateY(180deg);
-}
+.card.open .card-inner{transform:rotateY(180deg);}
 
 .card-front,.card-back{
 position:absolute;
@@ -58,25 +66,12 @@ padding:25px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-.card-front{
-background:white;
-}
+.card-front{background:white;}
 
 .card-back{
 background:#fff0f6;
 transform:rotateY(180deg);
 text-align:center;
-}
-
-h1{
-color:#ff4f81;
-margin-bottom:10px;
-}
-
-p{
-font-size:18px;
-line-height:1.6;
-color:#444;
 }
 
 button{
@@ -86,23 +81,61 @@ border:none;
 border-radius:25px;
 background:#ff6fa5;
 color:white;
-font-size:16px;
 cursor:pointer;
+}
+
+/* SECRET HEART */
+
+.secretHeart{
+position:absolute;
+bottom:15px;
+right:20px;
+font-size:28px;
+cursor:pointer;
+animation:beat 1s infinite;
+}
+
+@keyframes beat{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.2);}
+}
+
+/* ENVELOPE */
+
+.envelope{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0.7);
+width:320px;
+height:200px;
+background:#ffcadb;
+border-radius:10px;
+transition:0.6s;
+z-index:10;
+display:none;
+align-items:center;
+justify-content:center;
+}
+
+.envelope.open{transform:translate(-50%,-50%) scale(1);}
+
+.message{
+background:white;
+width:90%;
+padding:20px;
+border-radius:10px;
+text-align:center;
+position:relative;
 }
 
 /* FLOWER */
 
-.flower{
-position:fixed;
-top:-10px;
-animation:fall linear infinite;
-}
+.flower{position:fixed;top:-10px;animation:fall linear infinite;}
 
-@keyframes fall{
-to{transform:translateY(110vh);}
-}
+@keyframes fall{to{transform:translateY(110vh);}}
 
-/* HEART */
+/* HEART FOLLOW */
 
 .heart{
 position:fixed;
@@ -112,46 +145,10 @@ animation:float 1s ease-out;
 }
 
 @keyframes float{
-to{
-transform:translateY(-40px);
-opacity:0;
-}
+to{transform:translateY(-40px);opacity:0;}
 }
 
-/* HEART EXPLOSION */
-
-.explosion{
-position:fixed;
-font-size:20px;
-animation:explode 1s forwards;
-}
-
-@keyframes explode{
-to{
-transform:translate(var(--x),var(--y));
-opacity:0;
-}
-}
-
-/* FIREWORK */
-
-.fire{
-position:fixed;
-width:5px;
-height:5px;
-background:white;
-border-radius:50%;
-animation:firework 1s forwards;
-}
-
-@keyframes firework{
-to{
-transform:translate(var(--x),var(--y));
-opacity:0;
-}
-}
-
-/* GLOW CURSOR */
+/* CURSOR */
 
 .cursor{
 position:fixed;
@@ -159,20 +156,97 @@ width:20px;
 height:20px;
 border-radius:50%;
 background:rgba(255,150,200,0.6);
-pointer-events:none;
 filter:blur(8px);
+pointer-events:none;
 }
 
-@media(max-width:500px){
+/* LOVE ANIMATION */
 
-.card{
-height:360px;
+.loveHeart{
+position:fixed;
+font-size:40px;
+top:50%;
+transform:translateY(-50%);
+z-index:20;
 }
 
-p{
-font-size:16px;
+.leftHeart{left:-50px;animation:leftFly 1s forwards;}
+.rightHeart{right:-50px;animation:rightFly 1s forwards;}
+
+@keyframes leftFly{to{left:50%;}}
+@keyframes rightFly{to{right:50%;}}
+
+.loveText{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:60px;
+color:#ff4f81;
+font-weight:bold;
+animation:loveBoom 1s forwards;
+z-index:20;
 }
 
+@keyframes loveBoom{
+0%{transform:translate(-50%,-50%) scale(0.5);}
+50%{transform:translate(-50%,-50%) scale(1.5);}
+100%{transform:translate(-50%,-50%) scale(1);}
+}
+
+/* RING */
+
+#ringBox{
+position:absolute;
+right:10px;
+bottom:10px;
+display:none;
+}
+
+#ring{
+font-size:32px;
+cursor:pointer;
+animation:ringShake 0.6s infinite;
+}
+
+@keyframes ringShake{
+0%{transform:rotate(0)}
+25%{transform:rotate(15deg)}
+50%{transform:rotate(-15deg)}
+75%{transform:rotate(10deg)}
+100%{transform:rotate(0)}
+}
+
+/* LOVE BOX */
+
+#loveBox{display:none;margin-top:15px;}
+
+.sparkle{
+position:fixed;
+color:gold;
+font-size:18px;
+animation:sparkle 1s forwards;
+}
+
+@keyframes sparkle{
+to{transform:translateY(-40px);opacity:0;}
+}
+
+/* BIG HEART */
+
+.bigHeart{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+font-size:200px;
+color:red;
+animation:bigBoom 1s forwards;
+z-index:50;
+}
+
+@keyframes bigBoom{
+to{transform:translate(-50%,-50%) scale(1);}
 }
 
 </style>
@@ -183,7 +257,6 @@ font-size:16px;
 <div class="cursor" id="cursor"></div>
 
 <div class="card" id="card">
-
 <div class="card-inner">
 
 <div class="card-front">
@@ -193,65 +266,220 @@ font-size:16px;
 </div>
 
 <div class="card-back">
-
 <h1>Happy 8/3 💖</h1>
+  <p>Chúc bé yêu 8/3 thật vui vẻ, luôn xinh đẹp và luôn cười thật nhiều nhé.  
+Anh mong rằng hôm nay và cả những ngày sau này em vẫn luôn được yêu thương thật nhiều. 💗</p>
+<div class="secretHeart" onclick="openEnvelope()">❤️</div>
+</div>
+
+</div>
+</div>
+
+<div class="envelope" id="envelope">
+<div class="message">
+
+<h3>💖 Gửi riêng bé 💖</h3>
 
 <p id="daysText"></p>
+<p id="typing"></p>
 
-<p>
-Chúc bé yêu 8/3 vui vẻ, cảm ơn em đã đến bên anh và yêu anh trong
-<b id="days"></b> ngày qua.
-Tình cảm này với anh giống như một món quà vô giá mà anh không tài nào đền đáp nổi.
-Chỉ mong rằng sau này anh vẫn luôn có thể ở bên cạnh em, cùng em đi qua thật nhiều ngày tháng nữa và làm cho em cười nhiều hơn mỗi ngày. 💗
-</p>
+<div id="ringBox">
+<span id="ring">💍</span>
+</div>
 
+<div id="loveBox">
+<h2>Anh yêu em</h2>
+<button onclick="acceptLove()">Em cũng yêu anh</button>
 </div>
 
 </div>
-
 </div>
+
+<audio id="music" preload="auto">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c9c1e1a3e.mp3?filename=romantic-piano-110192.mp3">
+</audio>
 
 <script>
 
 /* OPEN CARD */
 
 function openCard(){
-
 document.getElementById("card").classList.add("open")
+}
 
-heartExplosion()
-fireworkExplosion()
+/* LOVE ANIMATION */
+
+function loveAnimation(){
+
+const left=document.createElement("div")
+left.innerHTML="❤"
+left.className="loveHeart leftHeart"
+
+const right=document.createElement("div")
+right.innerHTML="❤"
+right.className="loveHeart rightHeart"
+
+document.body.appendChild(left)
+document.body.appendChild(right)
+
+setTimeout(()=>{
+
+left.remove()
+right.remove()
+
+const text=document.createElement("div")
+text.innerHTML="LOVE"
+text.className="loveText"
+
+document.body.appendChild(text)
+
+setTimeout(()=>text.remove(),1000)
+
+},1000)
 
 }
 
-/* LOVE DAYS */
+/* OPEN ENVELOPE */
+
+function openEnvelope(){
+
+loveAnimation()
+
+const music=document.getElementById("music")
+music.volume=0.6
+music.play().catch(()=>{})
+
+setTimeout(()=>{
+
+document.body.classList.add("night")
+
+let env=document.getElementById("envelope")
+env.style.display="flex"
+
+setTimeout(()=>{
+env.classList.add("open")
+startTyping()
+},300)
+
+},1200)
+
+}
+
+/* DAYS */
 
 const startDate=new Date("2024-02-29")
 const today=new Date()
-
 const diff=today-startDate
 const days=Math.floor(diff/(1000*60*60*24))
 
-document.getElementById("days").innerText=days
 document.getElementById("daysText").innerText=
 "Chúng ta đã bên nhau được "+days+" ngày rồi đó 💞"
 
-/* FLOWER FALL */
+/* TYPING */
+
+const text=`Cảm ơn em đã đến bên anh và yêu anh trong ${days} ngày qua.
+Tình cảm này với anh giống như một món quà vô giá mà anh không tài nào đền đáp nổi.
+Chỉ mong rằng sau này anh vẫn luôn có thể ở bên cạnh em, cùng em đi qua thật nhiều ngày tháng nữa và làm cho em cười nhiều hơn mỗi ngày.`
+
+let i=0
+
+function startTyping(){
+
+function type(){
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text.charAt(i)
+i++
+setTimeout(type,40)
+}else{
+document.getElementById("ringBox").style.display="block"
+}
+}
+
+type()
+
+}
+
+/* RING CLICK */
+
+document.addEventListener("click",e=>{
+
+if(e.target.id==="ring"){
+
+/* PHONE VIBRATION */
+
+if(navigator.vibrate){
+navigator.vibrate([200,100,200])
+}
+
+/* SPARKLE */
+
+for(let i=0;i<25;i++){
+const s=document.createElement("div")
+s.innerHTML="✨"
+s.className="sparkle"
+s.style.left=Math.random()*100+"vw"
+s.style.top=Math.random()*100+"vh"
+document.body.appendChild(s)
+setTimeout(()=>s.remove(),1000)
+}
+
+document.getElementById("loveBox").style.display="block"
+
+}
+
+})
+
+/* BIG HEART EXPLOSION */
+
+function acceptLove(){
+
+const big=document.createElement("div")
+big.innerHTML="❤"
+big.className="bigHeart"
+
+document.body.appendChild(big)
+
+setTimeout(()=>{
+
+for(let i=0;i<200;i++){
+
+const h=document.createElement("div")
+h.innerHTML="❤"
+h.className="heart"
+
+h.style.left="50%"
+h.style.top="50%"
+h.style.fontSize=(20+Math.random()*40)+"px"
+
+let angle=Math.random()*360
+let dist=300*Math.random()
+
+h.animate([
+{transform:"translate(-50%,-50%)"},
+{transform:`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px)`}
+],{duration:2000})
+
+document.body.appendChild(h)
+
+setTimeout(()=>h.remove(),2000)
+
+}
+
+},800)
+
+}
+
+/* FLOWER */
 
 function flower(){
-
 const f=document.createElement("div")
 f.innerHTML="🌸"
 f.className="flower"
-
 f.style.left=Math.random()*100+"vw"
 f.style.fontSize=(15+Math.random()*20)+"px"
 f.style.animationDuration=(5+Math.random()*5)+"s"
-
 document.body.appendChild(f)
-
 setTimeout(()=>f.remove(),10000)
-
 }
 
 setInterval(flower,400)
@@ -259,89 +487,22 @@ setInterval(flower,400)
 /* HEART FOLLOW */
 
 document.addEventListener("mousemove",e=>{
-
-spawnHeart(e.clientX,e.clientY)
-
-})
-
-document.addEventListener("touchmove",e=>{
-
-let t=e.touches[0]
-spawnHeart(t.clientX,t.clientY)
-
-})
-
-function spawnHeart(x,y){
-
 const h=document.createElement("div")
 h.innerHTML="❤"
 h.className="heart"
-
-h.style.left=x+"px"
-h.style.top=y+"px"
-
+h.style.left=e.clientX+"px"
+h.style.top=e.clientY+"px"
 document.body.appendChild(h)
-
 setTimeout(()=>h.remove(),1000)
+})
 
-}
-
-/* HEART EXPLOSION */
-
-function heartExplosion(){
-
-for(let i=0;i<30;i++){
-
-const h=document.createElement("div")
-h.innerHTML="❤"
-h.className="explosion"
-
-h.style.left="50%"
-h.style.top="50%"
-
-h.style.setProperty("--x",(Math.random()*400-200)+"px")
-h.style.setProperty("--y",(Math.random()*400-200)+"px")
-
-document.body.appendChild(h)
-
-setTimeout(()=>h.remove(),1000)
-
-}
-
-}
-
-/* FIREWORK */
-
-function fireworkExplosion(){
-
-for(let i=0;i<40;i++){
-
-const f=document.createElement("div")
-f.className="fire"
-
-f.style.left="50%"
-f.style.top="50%"
-
-f.style.setProperty("--x",(Math.random()*500-250)+"px")
-f.style.setProperty("--y",(Math.random()*500-250)+"px")
-
-document.body.appendChild(f)
-
-setTimeout(()=>f.remove(),1000)
-
-}
-
-}
-
-/* CURSOR GLOW */
+/* CURSOR */
 
 const cursor=document.getElementById("cursor")
 
 document.addEventListener("mousemove",e=>{
-
 cursor.style.left=e.clientX-10+"px"
 cursor.style.top=e.clientY-10+"px"
-
 })
 
 </script>
