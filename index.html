@@ -23,21 +23,6 @@ body.night{
 background:linear-gradient(180deg,#0b0f2a,#1b2b55);
 }
 
-/* STARS */
-
-.star{
-position:fixed;
-width:2px;
-height:2px;
-background:white;
-animation:twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle{
-from{opacity:0.2}
-to{opacity:1}
-}
-
 /* CARD */
 
 .card{width:90%;max-width:500px;height:320px;perspective:1000px;}
@@ -73,6 +58,9 @@ background:#fff0f6;
 transform:rotateY(180deg);
 text-align:center;
 }
+
+h1{color:#ff4f81;margin-bottom:10px;}
+p{font-size:18px;line-height:1.6;color:#444;}
 
 button{
 margin-top:20px;
@@ -129,71 +117,6 @@ text-align:center;
 position:relative;
 }
 
-/* FLOWER */
-
-.flower{position:fixed;top:-10px;animation:fall linear infinite;}
-
-@keyframes fall{to{transform:translateY(110vh);}}
-
-/* HEART FOLLOW */
-
-.heart{
-position:fixed;
-pointer-events:none;
-color:red;
-animation:float 1s ease-out;
-}
-
-@keyframes float{
-to{transform:translateY(-40px);opacity:0;}
-}
-
-/* CURSOR */
-
-.cursor{
-position:fixed;
-width:20px;
-height:20px;
-border-radius:50%;
-background:rgba(255,150,200,0.6);
-filter:blur(8px);
-pointer-events:none;
-}
-
-/* LOVE ANIMATION */
-
-.loveHeart{
-position:fixed;
-font-size:40px;
-top:50%;
-transform:translateY(-50%);
-z-index:20;
-}
-
-.leftHeart{left:-50px;animation:leftFly 1s forwards;}
-.rightHeart{right:-50px;animation:rightFly 1s forwards;}
-
-@keyframes leftFly{to{left:50%;}}
-@keyframes rightFly{to{right:50%;}}
-
-.loveText{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:60px;
-color:#ff4f81;
-font-weight:bold;
-animation:loveBoom 1s forwards;
-z-index:20;
-}
-
-@keyframes loveBoom{
-0%{transform:translate(-50%,-50%) scale(0.5);}
-50%{transform:translate(-50%,-50%) scale(1.5);}
-100%{transform:translate(-50%,-50%) scale(1);}
-}
-
 /* RING */
 
 #ringBox{
@@ -217,18 +140,16 @@ animation:ringShake 0.6s infinite;
 100%{transform:rotate(0)}
 }
 
-/* LOVE BOX */
+/* HEART FOLLOW */
 
-#loveBox{display:none;margin-top:15px;}
-
-.sparkle{
+.heart{
 position:fixed;
-color:gold;
-font-size:18px;
-animation:sparkle 1s forwards;
+pointer-events:none;
+color:red;
+animation:float 1s ease-out;
 }
 
-@keyframes sparkle{
+@keyframes float{
 to{transform:translateY(-40px);opacity:0;}
 }
 
@@ -254,8 +175,6 @@ to{transform:translate(-50%,-50%) scale(1);}
 
 <body>
 
-<div class="cursor" id="cursor"></div>
-
 <div class="card" id="card">
 <div class="card-inner">
 
@@ -267,11 +186,15 @@ to{transform:translate(-50%,-50%) scale(1);}
 
 <div class="card-back">
 <h1>Happy 8/3 💖</h1>
-  <p>Chúc bé yêu 8/3 thật vui vẻ, luôn xinh đẹp và luôn cười thật nhiều nhé.  
-Anh mong rằng hôm nay và cả những ngày sau này em vẫn luôn được yêu thương thật nhiều. 💗</p>
-<div class="secretHeart" onclick="openEnvelope()">❤️</div>
-</div>
 
+<p>
+Chúc bé yêu 8/3 thật vui vẻ, luôn xinh đẹp và luôn cười thật nhiều nhé.  
+Anh mong rằng hôm nay và cả những ngày sau này em vẫn luôn được yêu thương thật nhiều. 💗
+</p>
+
+<div class="secretHeart" onclick="openEnvelope()">❤️</div>
+
+</div>
 </div>
 </div>
 
@@ -287,7 +210,7 @@ Anh mong rằng hôm nay và cả những ngày sau này em vẫn luôn được
 <span id="ring">💍</span>
 </div>
 
-<div id="loveBox">
+<div id="loveBox" style="display:none;">
 <h2>Anh yêu em</h2>
 <button onclick="acceptLove()">Em cũng yêu anh</button>
 </div>
@@ -313,24 +236,33 @@ function loveAnimation(){
 
 const left=document.createElement("div")
 left.innerHTML="❤"
-left.className="loveHeart leftHeart"
+left.style.position="fixed"
+left.style.left="-50px"
+left.style.top="50%"
+left.style.fontSize="40px"
 
 const right=document.createElement("div")
 right.innerHTML="❤"
-right.className="loveHeart rightHeart"
+right.style.position="fixed"
+right.style.right="-50px"
+right.style.top="50%"
+right.style.fontSize="40px"
 
 document.body.appendChild(left)
 document.body.appendChild(right)
 
+left.animate([{left:"-50px"},{left:"50%"}],{duration:1000})
+right.animate([{right:"-50px"},{right:"50%"}],{duration:1000})
+
 setTimeout(()=>{
-
-left.remove()
-right.remove()
-
 const text=document.createElement("div")
 text.innerHTML="LOVE"
-text.className="loveText"
-
+text.style.position="fixed"
+text.style.top="50%"
+text.style.left="50%"
+text.style.transform="translate(-50%,-50%)"
+text.style.fontSize="60px"
+text.style.color="#ff4f81"
 document.body.appendChild(text)
 
 setTimeout(()=>text.remove(),1000)
@@ -346,7 +278,6 @@ function openEnvelope(){
 loveAnimation()
 
 const music=document.getElementById("music")
-music.volume=0.6
 music.play().catch(()=>{})
 
 setTimeout(()=>{
@@ -405,22 +336,8 @@ document.addEventListener("click",e=>{
 
 if(e.target.id==="ring"){
 
-/* PHONE VIBRATION */
-
 if(navigator.vibrate){
 navigator.vibrate([200,100,200])
-}
-
-/* SPARKLE */
-
-for(let i=0;i<25;i++){
-const s=document.createElement("div")
-s.innerHTML="✨"
-s.className="sparkle"
-s.style.left=Math.random()*100+"vw"
-s.style.top=Math.random()*100+"vh"
-document.body.appendChild(s)
-setTimeout(()=>s.remove(),1000)
 }
 
 document.getElementById("loveBox").style.display="block"
@@ -429,7 +346,7 @@ document.getElementById("loveBox").style.display="block"
 
 })
 
-/* BIG HEART EXPLOSION */
+/* HEART EXPLOSION */
 
 function acceptLove(){
 
@@ -468,42 +385,6 @@ setTimeout(()=>h.remove(),2000)
 },800)
 
 }
-
-/* FLOWER */
-
-function flower(){
-const f=document.createElement("div")
-f.innerHTML="🌸"
-f.className="flower"
-f.style.left=Math.random()*100+"vw"
-f.style.fontSize=(15+Math.random()*20)+"px"
-f.style.animationDuration=(5+Math.random()*5)+"s"
-document.body.appendChild(f)
-setTimeout(()=>f.remove(),10000)
-}
-
-setInterval(flower,400)
-
-/* HEART FOLLOW */
-
-document.addEventListener("mousemove",e=>{
-const h=document.createElement("div")
-h.innerHTML="❤"
-h.className="heart"
-h.style.left=e.clientX+"px"
-h.style.top=e.clientY+"px"
-document.body.appendChild(h)
-setTimeout(()=>h.remove(),1000)
-})
-
-/* CURSOR */
-
-const cursor=document.getElementById("cursor")
-
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX-10+"px"
-cursor.style.top=e.clientY-10+"px"
-})
 
 </script>
 
