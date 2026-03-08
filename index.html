@@ -11,12 +11,12 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family: "Segoe UI", sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
 height:100vh;
-background: linear-gradient(135deg,#ffd9ec,#e3f6ff);
+background:linear-gradient(135deg,#ffd9ec,#e3f6ff);
 display:flex;
 align-items:center;
 justify-content:center;
@@ -28,15 +28,14 @@ overflow:hidden;
 .card{
 width:90%;
 max-width:500px;
-height:300px;
-position:relative;
+height:320px;
 perspective:1000px;
 }
 
 .card-inner{
-position:absolute;
 width:100%;
 height:100%;
+position:relative;
 transition:1s;
 transform-style:preserve-3d;
 }
@@ -45,18 +44,18 @@ transform-style:preserve-3d;
 transform:rotateY(180deg);
 }
 
-.card-front, .card-back{
+.card-front,.card-back{
 position:absolute;
 width:100%;
 height:100%;
 border-radius:20px;
 backface-visibility:hidden;
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
-flex-direction:column;
-padding:30px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 .card-front{
@@ -96,23 +95,19 @@ cursor:pointer;
 .flower{
 position:fixed;
 top:-10px;
-font-size:20px;
 animation:fall linear infinite;
 }
 
 @keyframes fall{
-to{
-transform:translateY(110vh);
-}
+to{transform:translateY(110vh);}
 }
 
 /* HEART */
 
 .heart{
 position:fixed;
-color:red;
-font-size:18px;
 pointer-events:none;
+color:red;
 animation:float 1s ease-out;
 }
 
@@ -121,15 +116,57 @@ to{
 transform:translateY(-40px);
 opacity:0;
 }
-
 }
 
-/* MOBILE */
+/* HEART EXPLOSION */
 
-@media (max-width:500px){
+.explosion{
+position:fixed;
+font-size:20px;
+animation:explode 1s forwards;
+}
+
+@keyframes explode{
+to{
+transform:translate(var(--x),var(--y));
+opacity:0;
+}
+}
+
+/* FIREWORK */
+
+.fire{
+position:fixed;
+width:5px;
+height:5px;
+background:white;
+border-radius:50%;
+animation:firework 1s forwards;
+}
+
+@keyframes firework{
+to{
+transform:translate(var(--x),var(--y));
+opacity:0;
+}
+}
+
+/* GLOW CURSOR */
+
+.cursor{
+position:fixed;
+width:20px;
+height:20px;
+border-radius:50%;
+background:rgba(255,150,200,0.6);
+pointer-events:none;
+filter:blur(8px);
+}
+
+@media(max-width:500px){
 
 .card{
-height:350px;
+height:360px;
 }
 
 p{
@@ -142,6 +179,8 @@ font-size:16px;
 </head>
 
 <body>
+
+<div class="cursor" id="cursor"></div>
 
 <div class="card" id="card">
 
@@ -161,8 +200,8 @@ font-size:16px;
 
 <p>
 Chúc bé yêu 8/3 vui vẻ, cảm ơn em đã đến bên anh và yêu anh trong
-<b id="days"></b> ngày qua.  
-Tình cảm này với anh giống như một món quà vô giá mà anh không tài nào đền đáp nổi.  
+<b id="days"></b> ngày qua.
+Tình cảm này với anh giống như một món quà vô giá mà anh không tài nào đền đáp nổi.
 Chỉ mong rằng sau này anh vẫn luôn có thể ở bên cạnh em, cùng em đi qua thật nhiều ngày tháng nữa và làm cho em cười nhiều hơn mỗi ngày. 💗
 </p>
 
@@ -177,75 +216,131 @@ Chỉ mong rằng sau này anh vẫn luôn có thể ở bên cạnh em, cùng e
 /* OPEN CARD */
 
 function openCard(){
+
 document.getElementById("card").classList.add("open")
+
+heartExplosion()
+fireworkExplosion()
+
 }
 
 /* LOVE DAYS */
 
-const startDate = new Date("2024-02-29")
-const today = new Date()
+const startDate=new Date("2024-02-29")
+const today=new Date()
 
-const diff = today - startDate
+const diff=today-startDate
+const days=Math.floor(diff/(1000*60*60*24))
 
-const days = Math.floor(diff/(1000*60*60*24))
-
-document.getElementById("days").innerText = days
-document.getElementById("daysText").innerText =
-"Chúng ta đã bên nhau được " + days + " ngày rồi đó 💞"
+document.getElementById("days").innerText=days
+document.getElementById("daysText").innerText=
+"Chúng ta đã bên nhau được "+days+" ngày rồi đó 💞"
 
 /* FLOWER FALL */
 
-function createFlower(){
+function flower(){
 
-const flower=document.createElement("div")
-flower.innerHTML="🌸"
-flower.className="flower"
+const f=document.createElement("div")
+f.innerHTML="🌸"
+f.className="flower"
 
-flower.style.left=Math.random()*100+"vw"
-flower.style.animationDuration=(5+Math.random()*5)+"s"
-flower.style.fontSize=(15+Math.random()*20)+"px"
+f.style.left=Math.random()*100+"vw"
+f.style.fontSize=(15+Math.random()*20)+"px"
+f.style.animationDuration=(5+Math.random()*5)+"s"
 
-document.body.appendChild(flower)
+document.body.appendChild(f)
 
-setTimeout(()=>flower.remove(),10000)
+setTimeout(()=>f.remove(),10000)
 
 }
 
-setInterval(createFlower,400)
+setInterval(flower,400)
 
-/* HEART FOLLOW MOUSE */
+/* HEART FOLLOW */
 
-document.addEventListener("mousemove",function(e){
+document.addEventListener("mousemove",e=>{
 
-const heart=document.createElement("div")
-heart.innerHTML="❤"
-heart.className="heart"
-
-heart.style.left=e.clientX+"px"
-heart.style.top=e.clientY+"px"
-
-document.body.appendChild(heart)
-
-setTimeout(()=>heart.remove(),1000)
+spawnHeart(e.clientX,e.clientY)
 
 })
 
-/* MOBILE TOUCH HEART */
+document.addEventListener("touchmove",e=>{
 
-document.addEventListener("touchmove",function(e){
+let t=e.touches[0]
+spawnHeart(t.clientX,t.clientY)
 
-const touch=e.touches[0]
+})
 
-const heart=document.createElement("div")
-heart.innerHTML="❤"
-heart.className="heart"
+function spawnHeart(x,y){
 
-heart.style.left=touch.clientX+"px"
-heart.style.top=touch.clientY+"px"
+const h=document.createElement("div")
+h.innerHTML="❤"
+h.className="heart"
 
-document.body.appendChild(heart)
+h.style.left=x+"px"
+h.style.top=y+"px"
 
-setTimeout(()=>heart.remove(),1000)
+document.body.appendChild(h)
+
+setTimeout(()=>h.remove(),1000)
+
+}
+
+/* HEART EXPLOSION */
+
+function heartExplosion(){
+
+for(let i=0;i<30;i++){
+
+const h=document.createElement("div")
+h.innerHTML="❤"
+h.className="explosion"
+
+h.style.left="50%"
+h.style.top="50%"
+
+h.style.setProperty("--x",(Math.random()*400-200)+"px")
+h.style.setProperty("--y",(Math.random()*400-200)+"px")
+
+document.body.appendChild(h)
+
+setTimeout(()=>h.remove(),1000)
+
+}
+
+}
+
+/* FIREWORK */
+
+function fireworkExplosion(){
+
+for(let i=0;i<40;i++){
+
+const f=document.createElement("div")
+f.className="fire"
+
+f.style.left="50%"
+f.style.top="50%"
+
+f.style.setProperty("--x",(Math.random()*500-250)+"px")
+f.style.setProperty("--y",(Math.random()*500-250)+"px")
+
+document.body.appendChild(f)
+
+setTimeout(()=>f.remove(),1000)
+
+}
+
+}
+
+/* CURSOR GLOW */
+
+const cursor=document.getElementById("cursor")
+
+document.addEventListener("mousemove",e=>{
+
+cursor.style.left=e.clientX-10+"px"
+cursor.style.top=e.clientY-10+"px"
 
 })
 
